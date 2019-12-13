@@ -1,0 +1,392 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: componentschematics.core.oam.dev
+spec:
+  group: core.oam.dev
+  names:
+    kind: ComponentSchematic
+    plural: componentschematics
+  scope: ""
+  validation:
+    openAPIV3Schema:
+      description: ComponentSchematic is the Schema for the components API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: ComponentSpec defines the desired state of ComponentSchematic
+          properties:
+            arch:
+              type: string
+            containers:
+              items:
+                description: Container describes the container configuration for a
+                  Component.
+                properties:
+                  args:
+                    items:
+                      type: string
+                    type: array
+                  cmd:
+                    items:
+                      type: string
+                    type: array
+                  config:
+                    items:
+                      description: ConfigFile describes locations to write configuration
+                        as files accessible within the container
+                      properties:
+                        fromParam:
+                          type: string
+                        path:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - path
+                      type: object
+                    type: array
+                  env:
+                    items:
+                      description: Env describes an environment variable for a container.
+                      properties:
+                        fromParam:
+                          type: string
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  image:
+                    type: string
+                  imagePullSecret:
+                    type: string
+                  livenessProbe:
+                    description: HealthProbe describes a probe used to check on the
+                      health of a Container.
+                    properties:
+                      exec:
+                        properties:
+                          command:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - command
+                        type: object
+                      failureThreshold:
+                        format: int32
+                        type: integer
+                      httpGet:
+                        properties:
+                          httpHeaders:
+                            items:
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                              required:
+                              - name
+                              - value
+                              type: object
+                            type: array
+                          path:
+                            type: string
+                          port:
+                            format: int32
+                            type: integer
+                        required:
+                        - httpHeaders
+                        - path
+                        - port
+                        type: object
+                      initialDelaySeconds:
+                        format: int32
+                        type: integer
+                      periodSeconds:
+                        format: int32
+                        type: integer
+                      successThreshold:
+                        format: int32
+                        type: integer
+                      tcpSocket:
+                        description: / TcpSocket defines a socket used for health
+                          probing.
+                        properties:
+                          port:
+                            format: int32
+                            type: integer
+                        required:
+                        - port
+                        type: object
+                      timeoutSeconds:
+                        format: int32
+                        type: integer
+                    type: object
+                  name:
+                    type: string
+                  ports:
+                    items:
+                      description: Port describes a port on a Container.
+                      properties:
+                        name:
+                          type: string
+                        port:
+                          format: int32
+                          type: integer
+                        protocol:
+                          type: string
+                      required:
+                      - name
+                      - port
+                      type: object
+                    type: array
+                  readinessProbe:
+                    description: HealthProbe describes a probe used to check on the
+                      health of a Container.
+                    properties:
+                      exec:
+                        properties:
+                          command:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - command
+                        type: object
+                      failureThreshold:
+                        format: int32
+                        type: integer
+                      httpGet:
+                        properties:
+                          httpHeaders:
+                            items:
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                              required:
+                              - name
+                              - value
+                              type: object
+                            type: array
+                          path:
+                            type: string
+                          port:
+                            format: int32
+                            type: integer
+                        required:
+                        - httpHeaders
+                        - path
+                        - port
+                        type: object
+                      initialDelaySeconds:
+                        format: int32
+                        type: integer
+                      periodSeconds:
+                        format: int32
+                        type: integer
+                      successThreshold:
+                        format: int32
+                        type: integer
+                      tcpSocket:
+                        description: / TcpSocket defines a socket used for health
+                          probing.
+                        properties:
+                          port:
+                            format: int32
+                            type: integer
+                        required:
+                        - port
+                        type: object
+                      timeoutSeconds:
+                        format: int32
+                        type: integer
+                    type: object
+                  resources:
+                    description: / Resources defines the resources required by a container.
+                    properties:
+                      cpu:
+                        description: / CPU describes a CPU resource allocation for
+                          a container. / / The minimum number of logical cpus required
+                          for running this container.
+                        properties:
+                          required:
+                            type: string
+                        required:
+                        - required
+                        type: object
+                      extended:
+                        items:
+                          description: ExtendedResource give extension ability
+                          properties:
+                            name:
+                              type: string
+                            required:
+                              type: string
+                          required:
+                          - name
+                          - required
+                          type: object
+                        type: array
+                      gpu:
+                        description: / GPU describes a Container's need for a GPU.
+                          / / The minimum number of gpus required for running this
+                          container.
+                        properties:
+                          required:
+                            type: string
+                        required:
+                        - required
+                        type: object
+                      memory:
+                        description: / Memory describes the memory allocation for
+                          a container. / / The minimum amount of memory in MB required
+                          for running this container. The value should be a positive
+                          integer, greater than zero.
+                        properties:
+                          required:
+                            type: string
+                        required:
+                        - required
+                        type: object
+                      volumes:
+                        items:
+                          description: / Volume describes a path that is attached
+                            to a Container. / / It specifies not only the location,
+                            but also the requirements.
+                          properties:
+                            accessMode:
+                              description: / AccessMode defines the access modes for
+                                file systems. / / Currently, only read/write and read-only
+                                are supported.
+                              type: string
+                            disk:
+                              description: Disk describes the disk requirements for
+                                backing a Volume.
+                              properties:
+                                ephemeral:
+                                  type: boolean
+                                required:
+                                  type: string
+                              required:
+                              - required
+                              type: object
+                            mountPath:
+                              type: string
+                            name:
+                              type: string
+                            sharingPolicy:
+                              description: / SharingPolicy defines whether a filesystem
+                                can be shared across containers. / / An Exclusive
+                                filesystem can only be attached to one container.
+                              type: string
+                          required:
+                          - mountPath
+                          - name
+                          type: object
+                        type: array
+                    required:
+                    - cpu
+                    - memory
+                    type: object
+                required:
+                - image
+                - name
+                - resources
+                type: object
+              type: array
+            osType:
+              type: string
+            parameters:
+              items:
+                description: parameter declaration
+                properties:
+                  default:
+                    description: The parameter's default value. type indicated by
+                      type field.
+                    type: string
+                  description:
+                    description: A description of the parameter.
+                    type: string
+                  name:
+                    description: The parameter's name. Must be unique per component.
+                    type: string
+                  required:
+                    description: Whether a value must be provided for the parameter.
+                      Default is false.
+                    type: boolean
+                  type:
+                    description: The parameter's type. One of boolean, number, string,
+                      or null as defined in the JSON specification and the JSON Schema
+                      Validation spec
+                    type: string
+                required:
+                - name
+                - type
+                type: object
+              type: array
+            workloadSettings:
+              items:
+                description: "TODO: change to an object"
+                properties:
+                  description:
+                    type: string
+                  fromParam:
+                    type: string
+                  name:
+                    type: string
+                  required:
+                    type: boolean
+                  type:
+                    type: string
+                  value:
+                    anyOf:
+                    - type: string
+                    - type: integer
+                required:
+                - name
+                - type
+                - value
+                type: object
+              type: array
+            workloadType:
+              type: string
+          required:
+          - workloadType
+          type: object
+        status:
+          type: object
+      required:
+      - spec
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

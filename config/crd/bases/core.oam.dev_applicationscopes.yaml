@@ -1,0 +1,81 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: applicationscopes.core.oam.dev
+spec:
+  group: core.oam.dev
+  names:
+    kind: ApplicationScope
+    plural: applicationscopes
+  scope: ""
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            allowComponentOverlap:
+              type: boolean
+            parameters:
+              items:
+                description: parameter declaration
+                properties:
+                  default:
+                    description: The parameter's default value. type indicated by
+                      type field.
+                    type: string
+                  description:
+                    description: A description of the parameter.
+                    type: string
+                  name:
+                    description: The parameter's name. Must be unique per component.
+                    type: string
+                  required:
+                    description: Whether a value must be provided for the parameter.
+                      Default is false.
+                    type: boolean
+                  type:
+                    description: The parameter's type. One of boolean, number, string,
+                      or null as defined in the JSON specification and the JSON Schema
+                      Validation spec
+                    type: string
+                required:
+                - name
+                - type
+                type: object
+              type: array
+            type:
+              type: string
+          required:
+          - allowComponentOverlap
+          - parameters
+          - type
+          type: object
+        status:
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

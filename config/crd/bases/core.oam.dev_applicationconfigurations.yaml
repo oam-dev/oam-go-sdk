@@ -1,0 +1,224 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: applicationconfigurations.core.oam.dev
+spec:
+  group: core.oam.dev
+  names:
+    kind: ApplicationConfiguration
+    plural: applicationconfigurations
+  scope: ""
+  validation:
+    openAPIV3Schema:
+      description: ApplicationConfiguration is the Schema for the operationalconfigurations
+        API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: ApplicationConfigurationSpec defines the desired state of ApplicationConfiguration
+          properties:
+            components:
+              items:
+                properties:
+                  applicationScopes:
+                    items:
+                      type: string
+                    type: array
+                  componentName:
+                    type: string
+                  instanceName:
+                    type: string
+                  parameterValues:
+                    items:
+                      description: / A value that is substituted into a parameter.
+                      properties:
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                  refName:
+                    description: extension field, workload reference name TODO this
+                      should be removed as spec didn't have
+                    type: string
+                  traits:
+                    items:
+                      properties:
+                        instanceName:
+                          description: TODO this is extension field, should be added
+                            to spec or removed
+                          type: string
+                        name:
+                          type: string
+                        properties:
+                          description: 'TODO: change to Value'
+                          items:
+                            description: / A value that is substituted into a parameter.
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - name
+                            - value
+                            type: object
+                          type: array
+                        refName:
+                          description: TODO this is extension field, trait resource
+                            reference name,should be removed
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                required:
+                - componentName
+                - instanceName
+                type: object
+              type: array
+            scopes:
+              items:
+                properties:
+                  name:
+                    type: string
+                  properties:
+                    description: TODO scope properties maybe need to be changed to
+                      map[string]interface{} A properties object (for trait and scope
+                      configuration) is an object whose structure is determined by
+                      the trait or scope property schema. It may be a simple value,
+                      or it may be a complex object. Properties are validated against
+                      the schema appropriate for the trait or scope.
+                    items:
+                      additionalProperties:
+                        anyOf:
+                        - type: string
+                        - type: integer
+                      type: object
+                    type: array
+                  type:
+                    type: string
+                required:
+                - name
+                - type
+                type: object
+              type: array
+            variables:
+              items:
+                description: / A value that is substituted into a parameter.
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                required:
+                - name
+                - value
+                type: object
+              type: array
+          required:
+          - components
+          type: object
+        status:
+          description: ApplicationConfigurationStatus defines the observed state of
+            ApplicationConfiguration
+          properties:
+            conditions:
+              description: Represents the latest available observations of a application's
+                current state.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  lastUpdateTime:
+                    description: The last time this condition was updated.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status is the status of the condition. Can be True,
+                      False, Unknown. - True means application in this condition type
+                      - False means application not in this condition type - Unknown
+                      means whether application in this condition type is unknown
+                    type: string
+                  type:
+                    description: Type of Application condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            modules:
+              description: Module status array for all modules constitute this application.
+                Module is k8s build-in or CRD object, only show cswt level.
+              items:
+                description: ModuleStatus is a generic status holder for components
+                properties:
+                  groupVersion:
+                    description: ComponentConfiguration groupVersion
+                    type: string
+                  kind:
+                    description: Kind of component
+                    type: string
+                  name:
+                    description: NamespacedName of component
+                    type: string
+                  status:
+                    description: 'Status. Values: Progressing, Ready, Failed'
+                    type: string
+                type: object
+              type: array
+            phase:
+              description: 'The phase of a application is a simple, high-level summary
+                of where the whole  Application is in its lifecycle. The conditions
+                array contains more detail about the appConf''s status. There are
+                five possible phase values: Pending: The Application has been accepted
+                by the Kubernetes system, but not get processed by EDAS. Progressing:
+                The Application has been processed by EDAS, related resources provision
+                are progressing. Ready: All related resources provision are ready,
+                application is on serving. Failed: Occur some failures in the process
+                of creating Application, you can get detail infos from Conditions.
+                Unknown: For some reason the state of the Application could not be
+                obtained, typically due to an error in controller.'
+              type: string
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
