@@ -1,0 +1,31 @@
+apiVersion: core.oam.dev/v1alpha1
+kind: Trait
+metadata:
+  name: rollout
+spec:
+  type: edas.aliyun.com/v1alpha1.Rollout
+  appliesTo:
+    - core.oam.dev/v1alpha1.Server
+  properties: >
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object"
+      "properties": {
+        "canaryReplicas": {
+          "type" : "number"
+          "description": "canary replicas when rollout"
+        },
+        "batches": {
+          "type": "number",
+          "description": "batch times, if canary replicas is not 0, batch rollout for remain replicas."
+        },
+        "batchInterval": {
+          "type": "number",
+          "description": "interval time in second between batches."
+        },
+        "instanceInterval": {
+          "type": "number",
+          "description": "interval time in second between instances within batch."
+        }
+      }
+    }

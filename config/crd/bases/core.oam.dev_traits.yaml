@@ -1,0 +1,79 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: traits.core.oam.dev
+spec:
+  group: core.oam.dev
+  names:
+    kind: Trait
+    plural: traits
+  scope: ""
+  validation:
+    openAPIV3Schema:
+      description: Trait is the Schema for the traits API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: TraitSpec defines the desired state of Trait
+          properties:
+            appliesTo:
+              description: The list of workload types that this trait applies to.
+                "*" means any workload type Default is ['*']
+              items:
+                type: string
+              type: array
+            names:
+              description: 'EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN! NOTE:
+                json tags are required.  Any new fields you add must have json tags
+                for the fields to be serialized.'
+              properties:
+                kind:
+                  type: string
+                plural:
+                  type: string
+                singular:
+                  type: string
+              required:
+              - kind
+              type: object
+            properties:
+              description: description of json schema
+              type: string
+            type:
+              type: string
+            version:
+              type: string
+          required:
+          - names
+          - type
+          - version
+          type: object
+        status:
+          description: TraitStatus defines the observed state of Trait
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

@@ -1,0 +1,28 @@
+apiVersion: core.oam.dev/v1alpha1
+kind: ComponentSchematic
+metadata:
+  name: stateless
+spec:
+  workloadType: core.oam.dev/v1alpha1.Server
+  containers:
+    - name: sample
+      image: "somefive/hello-world:dev"
+      resources:
+        cpu: 1
+        memory: 200
+      env:
+        - name: k1
+          fromValue: k1
+        - name: k2
+          fromValue: k2
+      ports:
+        - name: p1
+          port: 80
+          protocol: TCP
+  parameters:
+    - name: k1
+      type: string
+      default: "hello"
+    - name: k2
+      type: string
+      default: "world"
