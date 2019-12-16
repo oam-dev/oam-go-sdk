@@ -135,7 +135,7 @@ type Env struct {
 // Port describes a port on a Container.
 type Port struct {
 	Name          string `json:"name"`
-	ContainerPort int32  `json:"port"`
+	ContainerPort int32  `json:"containerPort"`
 	// +optional
 	Protocol PortProtocol `json:"protocol,omitempty"`
 }

@@ -101,12 +101,12 @@ spec:
                   name:
                     type: string
                   properties:
-                    description: TODO scope properties maybe need to be changed to
-                      map[string]interface{} A properties object (for trait and scope
-                      configuration) is an object whose structure is determined by
-                      the trait or scope property schema. It may be a simple value,
-                      or it may be a complex object. Properties are validated against
-                      the schema appropriate for the trait or scope.
+                    description: 'TODO: changed to v1.Unstructure A properties object
+                      (for trait and scope configuration) is an object whose structure
+                      is determined by the trait or scope property schema. It may
+                      be a simple value, or it may be a complex object. Properties
+                      are validated against the schema appropriate for the trait or
+                      scope.'
                     items:
                       additionalProperties:
                         anyOf:

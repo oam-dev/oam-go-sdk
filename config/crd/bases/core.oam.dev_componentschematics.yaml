@@ -147,16 +147,16 @@ spec:
                     items:
                       description: Port describes a port on a Container.
                       properties:
-                        name:
-                          type: string
-                        port:
+                        containerPort:
                           format: int32
                           type: integer
+                        name:
+                          type: string
                         protocol:
                           type: string
                       required:
+                      - containerPort
                       - name
-                      - port
                       type: object
                     type: array
                   readinessProbe:
@@ -347,7 +347,7 @@ spec:
               type: array
             workloadSettings:
               items:
-                description: "TODO: change to an object"
+                description: TODO Change to v1.Unstructured
                 properties:
                   description:
                     type: string
