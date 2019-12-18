@@ -8,8 +8,10 @@ spec:
     - name: sample
       image: "somefive/hello-world:dev"
       resources:
-        cpu: 1
-        memory: 200
+        cpu: 
+          required: 100m
+        memory: 
+          required: 200MB
       env:
         - name: k1
           fromValue: k1
@@ -17,7 +19,7 @@ spec:
           fromValue: k2
       ports:
         - name: p1
-          port: 80
+          containerPort: 80
           protocol: TCP
   parameters:
     - name: k1
