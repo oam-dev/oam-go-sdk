@@ -16,9 +16,11 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"encoding/json"
+
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 // ApplicationConfigurationSpec defines the desired state of ApplicationConfiguration
@@ -40,11 +42,11 @@ type ScopeBinding struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 
-	// TODO: changed to v1.Unstructure
 	// A properties object (for trait and scope configuration) is an object whose structure is determined by the trait or scope property schema. It may be a simple value, or it may be a complex object.
 	// Properties are validated against the schema appropriate for the trait or scope.
 	// +optional
-	Properties []map[string]intstr.IntOrString `json:"properties,omitempty"`
+	// Properties runtime.RawExtension `json:"properties,omitempty"`
+	Properties runtime.RawExtension `json:"properties,omitempty"`
 }
 
 // ApplicationConfigurationStatus defines the observed state of ApplicationConfiguration
@@ -188,7 +190,7 @@ type TraitBinding struct {
 	RefName string `json:"refName,omitempty"`
 	// TODO: change to Value
 	// +optional
-	Properties []ParameterValue `json:"properties,omitempty"`
+	Properties runtime.RawExtension `json:"properties,omitempty"`
 }
 
 // Check whether this componet configured specific trait.
@@ -201,7 +203,7 @@ func (c *ComponentConfiguration) ExistTrait(t string) bool {
 // If not exist, name is "" and parameterValues is nil.
 // bool mark whether this trait has ref name.
 func (c *ComponentConfiguration) ExtractTrait(t string) (string, bool, []ParameterValue) {
-	var properties []ParameterValue
+	var pvals []ParameterValue
 	name := ""
 	existing := c.Traits
 	isRef := false
@@ -213,11 +215,20 @@ func (c *ComponentConfiguration) ExtractTrait(t string) (string, bool, []Paramet
 			} else {
 				name = c.InstanceName + "-" + t
 			}
-			properties = f.Properties
+			pvals = parseParamValues(f.Properties.Raw)
 			break
 		}
 	}
-	return name, isRef, properties
+	return name, isRef, pvals
+}
+
+func parseParamValues(data []byte) []ParameterValue {
+	pvals := make([]ParameterValue, 0)
+	err := json.Unmarshal(data, &pvals)
+	if err != nil {
+		panic("json Unmarshal failed")
+	}
+	return pvals
 }
 
 func (c *ComponentConfiguration) GenTraitName(appConf *ApplicationConfiguration, t string) string {

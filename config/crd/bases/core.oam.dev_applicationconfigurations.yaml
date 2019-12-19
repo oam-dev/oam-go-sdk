@@ -424,17 +424,7 @@ spec:
                           type: string
                         properties:
                           description: 'TODO: change to Value'
-                          items:
-                            properties:
-                              name:
-                                type: string
-                              value:
-                                type: string
-                            required:
-                            - name
-                            - value
-                            type: object
-                          type: array
+                          type: object
                         refName:
                           description: TODO this is extension field, trait resource
                             reference name,should be removed
@@ -454,19 +444,12 @@ spec:
                   name:
                     type: string
                   properties:
-                    description: 'TODO: changed to v1.Unstructure A properties object
-                      (for trait and scope configuration) is an object whose structure
-                      is determined by the trait or scope property schema. It may
-                      be a simple value, or it may be a complex object. Properties
-                      are validated against the schema appropriate for the trait or
-                      scope.'
-                    items:
-                      additionalProperties:
-                        anyOf:
-                        - type: string
-                        - type: integer
-                      type: object
-                    type: array
+                    description: A properties object (for trait and scope configuration)
+                      is an object whose structure is determined by the trait or scope
+                      property schema. It may be a simple value, or it may be a complex
+                      object. Properties are validated against the schema appropriate
+                      for the trait or scope. Properties runtime.RawExtension `json:"properties,omitempty"`
+                    type: object
                   type:
                     type: string
                 required:
