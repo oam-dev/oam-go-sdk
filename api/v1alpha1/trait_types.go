@@ -16,20 +16,8 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"encoding/json"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-// +k8s:deepcopy-gen:interfaces=github.com/oam-dev/admission-controller/pkg/apis/core.oam.dev/v1alpha1.Value
-type Value map[string]interface{}
-
-func (in *Value) DeepCopy() *Value {
-	value, _ := json.Marshal(in)
-	newv := make(Value)
-	json.Unmarshal(value, &newv)
-	return &newv
-}
 
 // TraitSpec defines the desired state of Trait
 type TraitSpec struct {
