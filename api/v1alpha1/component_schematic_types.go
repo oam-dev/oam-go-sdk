@@ -18,7 +18,7 @@ package v1alpha1
 import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 type PortProtocol string
@@ -27,22 +27,6 @@ const (
 	TCP PortProtocol = "TCP"
 	UDP              = "UDP"
 )
-
-//TODO Change to v1.Unstructured
-type WorkloadSetting struct {
-	Name string `json:"name"`
-
-	// +optional
-	Description string `json:"description,omitempty"`
-
-	Value intstr.IntOrString `json:"value"`
-	Type  string             `json:"type"`
-
-	// +optional
-	Required bool `json:"required,omitempty"`
-	// +optional
-	FromParam string `json:"fromParam,omitempty"`
-}
 
 /// CPU describes a CPU resource allocation for a container.
 ///
@@ -245,6 +229,15 @@ type Parameter struct {
 	Default string `json:"default,omitempty"`
 }
 
+type Expose struct {
+	Name string `json:"name"`
+}
+
+type Consume struct {
+	Name string `json:"name"`
+	As   string `json:"as"`
+}
+
 // ComponentSpec defines the desired state of ComponentSchematic
 type ComponentSpec struct {
 	// +optional
@@ -258,7 +251,11 @@ type ComponentSpec struct {
 	Containers []Container `json:"containers,omitempty"`
 
 	// +optional
-	WorkloadSettings []WorkloadSetting `json:"workloadSettings,omitempty"`
+	Expose []Expose `json:"expose,omitempty"`
+	// +optional
+	Consume []Consume `json:"consume,omitempty"`
+	// +optional
+	WorkloadSettings runtime.RawExtension `json:"workloadSettings,omitempty"`
 }
 
 type ComponentStatus struct {
