@@ -1,0 +1,32 @@
+apiVersion: oam.dev/v1alpha1
+kind: WorkloadType
+metadata:
+  name: extended-workload
+spec:
+  group: example.com
+  version: v1alpha1
+  names:
+    kind: ExtentionWorkload
+  workloadSettings: |
+    {
+       "$schema":"http://json-schema.org/draft-07/schema#",
+       "type":"object",
+       "description":"",
+       "required":[
+          "Protocol"
+       ],
+       "properties":{
+          "Protocol":{
+             "type":"string",
+             "description":""
+          },
+          "Type":{
+             "type":"string",
+             "description":""
+          },
+          "Description":{
+             "type":"string",
+             "description":""
+          }
+       }
+    }

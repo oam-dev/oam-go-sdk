@@ -107,8 +107,8 @@ func withSpec(tp SType) Option {
 
 }
 
-// WithCompnent registers Component reconciler
-func WithCompnent() Option {
+// WithComponent registers Component reconciler
+func WithComponent() Option {
 	return withSpec(STypeComponent)
 
 }
