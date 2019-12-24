@@ -1,0 +1,16 @@
+apiVersion: core.oam.dev/v1alpha1
+kind: ComponentSchematic
+metadata:
+  name: example-workload
+  annotations:
+    version: v1.0.0
+    description: >
+      component schematic that describes extended workload.
+spec:
+  workloadType: example.com/v1alpha1.ExtentionWorkload
+  workloadSettings:
+    Protocol: Example
+    Type: Performance
+    Description: xxx
+  expose:
+    - name: exampleOutput
