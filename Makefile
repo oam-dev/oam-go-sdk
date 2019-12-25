@@ -8,7 +8,7 @@ all: manager
 
 # Run tests
 test: generate fmt vet manifests
-	go test ./api/... ./controllers/... -coverprofile cover.out
+	go test ./api/... ./pkg/... -coverprofile cover.out
 
 # Build manager binary
 manager: generate fmt vet
@@ -55,9 +55,10 @@ docker-push:
 
 # find or download controller-gen
 # download controller-gen if necessary
+# make sure use controller-gen v0.2.1
 controller-gen:
 ifeq (, $(shell which controller-gen))
-	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.0-beta.1
+	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.1
 CONTROLLER_GEN=$(shell go env GOPATH)/bin/controller-gen
 else
 CONTROLLER_GEN=$(shell which controller-gen)

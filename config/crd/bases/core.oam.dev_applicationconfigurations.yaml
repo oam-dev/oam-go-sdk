@@ -3,8 +3,6 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  annotations:
-    controller-gen.kubebuilder.io/version: v0.2.4
   creationTimestamp: null
   name: applicationconfigurations.core.oam.dev
 spec:
@@ -14,7 +12,7 @@ spec:
     listKind: ApplicationConfigurationList
     plural: applicationconfigurations
     singular: applicationconfiguration
-  scope: Namespaced
+  scope: ""
   validation:
     openAPIV3Schema:
       description: ApplicationConfiguration is the Schema for the operationalconfigurations
