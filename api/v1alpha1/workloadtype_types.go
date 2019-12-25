@@ -45,7 +45,7 @@ type WorkloadTypeSpec struct {
 
 	// The workload type's settings options.
 	// +optional
-	Settings []Parameter `json:"settings,omitempty"`
+	Settings string `json:"settings,omitempty"`
 }
 
 // WorkloadTypeStatus defines the observed state of WorkloadType
