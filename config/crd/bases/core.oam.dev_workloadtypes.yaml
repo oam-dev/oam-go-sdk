@@ -3,14 +3,18 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.4
   creationTimestamp: null
   name: workloadtypes.core.oam.dev
 spec:
   group: core.oam.dev
   names:
     kind: WorkloadType
+    listKind: WorkloadTypeList
     plural: workloadtypes
-  scope: ""
+    singular: workloadtype
+  scope: Namespaced
   validation:
     openAPIV3Schema:
       description: WorkloadType is the Schema for the workloadtypes API
@@ -49,33 +53,7 @@ spec:
               type: object
             settings:
               description: The workload type's settings options.
-              items:
-                description: parameter declaration
-                properties:
-                  default:
-                    description: The parameter's default value. type indicated by
-                      type field.
-                    type: string
-                  description:
-                    description: A description of the parameter.
-                    type: string
-                  name:
-                    description: The parameter's name. Must be unique per component.
-                    type: string
-                  required:
-                    description: Whether a value must be provided for the parameter.
-                      Default is false.
-                    type: boolean
-                  type:
-                    description: The parameter's type. One of boolean, number, string,
-                      or null as defined in the JSON specification and the JSON Schema
-                      Validation spec
-                    type: string
-                required:
-                - name
-                - type
-                type: object
-              type: array
+              type: string
             version:
               type: string
           required:

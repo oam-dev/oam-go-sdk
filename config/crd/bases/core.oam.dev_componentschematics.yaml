@@ -3,14 +3,18 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.4
   creationTimestamp: null
   name: componentschematics.core.oam.dev
 spec:
   group: core.oam.dev
   names:
     kind: ComponentSchematic
+    listKind: ComponentSchematicList
     plural: componentschematics
-  scope: ""
+    singular: componentschematic
+  scope: Namespaced
   validation:
     openAPIV3Schema:
       description: ComponentSchematic is the Schema for the components API
