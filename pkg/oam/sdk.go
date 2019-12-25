@@ -13,7 +13,7 @@ type Option func() error
 
 type ControllerContext struct {
 	mgr       ctrl.Manager
-	l         sync.RWMutex
+	l         *sync.RWMutex
 	handlers  map[SType][]Handler
 	preHooks  map[SType][]Hook
 	postHooks map[SType][]Hook
@@ -27,6 +27,7 @@ var (
 		preHooks:  make(map[SType][]Hook),
 		postHooks: make(map[SType][]Hook),
 		owns:      make(map[SType][]runtime.Object),
+		l:         new(sync.RWMutex),
 	}
 )
 
