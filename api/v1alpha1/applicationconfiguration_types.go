@@ -202,8 +202,8 @@ func (c *ComponentConfiguration) ExistTrait(t string) bool {
 // Get specific trait's Full name of this component and its parameterValues.
 // If not exist, name is "" and parameterValues is nil.
 // bool mark whether this trait has ref name.
-func (c *ComponentConfiguration) ExtractTrait(t string) (string, bool, []ParameterValue) {
-	var pvals []ParameterValue
+func (c *ComponentConfiguration) ExtractTrait(t string) (string, bool, map[string]interface{}) {
+	var pvals map[string]interface{}
 	name := ""
 	existing := c.Traits
 	isRef := false
@@ -222,8 +222,8 @@ func (c *ComponentConfiguration) ExtractTrait(t string) (string, bool, []Paramet
 	return name, isRef, pvals
 }
 
-func parseParamValues(data []byte) []ParameterValue {
-	pvals := make([]ParameterValue, 0)
+func parseParamValues(data []byte) map[string]interface{} {
+	pvals := make(map[string]interface{})
 	err := json.Unmarshal(data, &pvals)
 	if err != nil {
 		panic("json Unmarshal failed")
