@@ -130,7 +130,6 @@ spec:
                             format: int32
                             type: integer
                         required:
-                        - httpHeaders
                         - path
                         - port
                         type: object
@@ -211,7 +210,6 @@ spec:
                             format: int32
                             type: integer
                         required:
-                        - httpHeaders
                         - path
                         - port
                         type: object

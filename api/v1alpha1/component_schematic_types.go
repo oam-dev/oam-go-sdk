@@ -134,8 +134,9 @@ type HttpHeader struct {
 }
 
 type HttpGet struct {
-	Path        string       `json:"path"`
-	Port        int32        `json:"port"`
+	Path string `json:"path"`
+	Port int32  `json:"port"`
+	// +optional
 	HttpHeaders []HttpHeader `json:"httpHeaders"`
 }
 
@@ -255,6 +256,7 @@ type ComponentSpec struct {
 	// +optional
 	Consume []Consume `json:"consume,omitempty"`
 	// +optional
+	// +skip
 	WorkloadSettings runtime.RawExtension `json:"workloadSettings,omitempty"`
 }
 
