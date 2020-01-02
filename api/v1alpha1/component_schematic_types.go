@@ -236,7 +236,8 @@ type Expose struct {
 
 type Consume struct {
 	Name string `json:"name"`
-	As   string `json:"as"`
+	// +optional
+	As string `json:"as"`
 }
 
 // ComponentSpec defines the desired state of ComponentSchematic

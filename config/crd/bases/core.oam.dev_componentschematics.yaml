@@ -44,7 +44,6 @@ spec:
                   name:
                     type: string
                 required:
-                - as
                 - name
                 type: object
               type: array
