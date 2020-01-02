@@ -134,8 +134,9 @@ type HttpHeader struct {
 }
 
 type HttpGet struct {
-	Path        string       `json:"path"`
-	Port        int32        `json:"port"`
+	Path string `json:"path"`
+	Port int32  `json:"port"`
+	// +optional
 	HttpHeaders []HttpHeader `json:"httpHeaders"`
 }
 
@@ -235,7 +236,8 @@ type Expose struct {
 
 type Consume struct {
 	Name string `json:"name"`
-	As   string `json:"as"`
+	// +optional
+	As string `json:"as"`
 }
 
 // ComponentSpec defines the desired state of ComponentSchematic

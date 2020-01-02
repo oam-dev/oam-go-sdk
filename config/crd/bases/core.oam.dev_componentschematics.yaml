@@ -44,7 +44,6 @@ spec:
                   name:
                     type: string
                 required:
-                - as
                 - name
                 type: object
               type: array
@@ -130,7 +129,6 @@ spec:
                             format: int32
                             type: integer
                         required:
-                        - httpHeaders
                         - path
                         - port
                         type: object
@@ -211,7 +209,6 @@ spec:
                             format: int32
                             type: integer
                         required:
-                        - httpHeaders
                         - path
                         - port
                         type: object
