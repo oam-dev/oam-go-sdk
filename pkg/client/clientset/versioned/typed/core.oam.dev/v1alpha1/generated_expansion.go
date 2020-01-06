@@ -16,6 +16,10 @@ limitations under the License.
 
 package v1alpha1
 
+type ApplicationConfigurationExpansion interface{}
+
 type ApplicationScopeExpansion interface{}
 
 type ComponentSchematicExpansion interface{}
+
+type TraitExpansion interface{}

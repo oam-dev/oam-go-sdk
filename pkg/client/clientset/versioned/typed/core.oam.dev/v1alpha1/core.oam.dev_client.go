@@ -24,13 +24,19 @@ import (
 
 type CoreV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ApplicationConfigurationsGetter
 	ApplicationScopesGetter
 	ComponentSchematicsGetter
+	TraitsGetter
 }
 
 // CoreV1alpha1Client is used to interact with features provided by the core.oam.dev group.
 type CoreV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *CoreV1alpha1Client) ApplicationConfigurations(namespace string) ApplicationConfigurationInterface {
+	return newApplicationConfigurations(c, namespace)
 }
 
 func (c *CoreV1alpha1Client) ApplicationScopes(namespace string) ApplicationScopeInterface {
@@ -39,6 +45,10 @@ func (c *CoreV1alpha1Client) ApplicationScopes(namespace string) ApplicationScop
 
 func (c *CoreV1alpha1Client) ComponentSchematics(namespace string) ComponentSchematicInterface {
 	return newComponentSchematics(c, namespace)
+}
+
+func (c *CoreV1alpha1Client) Traits(namespace string) TraitInterface {
+	return newTraits(c, namespace)
 }
 
 // NewForConfig creates a new CoreV1alpha1Client for the given config.

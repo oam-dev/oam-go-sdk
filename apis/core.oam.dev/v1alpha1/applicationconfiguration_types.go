@@ -142,6 +142,7 @@ const (
 	Error ApplicationConditionType = "Error"
 )
 
+// +genclient
 // +kubebuilder:object:root=true
 // ApplicationConfiguration is the Schema for the operationalconfigurations API
 type ApplicationConfiguration struct {

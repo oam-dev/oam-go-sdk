@@ -26,12 +26,20 @@ type FakeCoreV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeCoreV1alpha1) ApplicationConfigurations(namespace string) v1alpha1.ApplicationConfigurationInterface {
+	return &FakeApplicationConfigurations{c, namespace}
+}
+
 func (c *FakeCoreV1alpha1) ApplicationScopes(namespace string) v1alpha1.ApplicationScopeInterface {
 	return &FakeApplicationScopes{c, namespace}
 }
 
 func (c *FakeCoreV1alpha1) ComponentSchematics(namespace string) v1alpha1.ComponentSchematicInterface {
 	return &FakeComponentSchematics{c, namespace}
+}
+
+func (c *FakeCoreV1alpha1) Traits(namespace string) v1alpha1.TraitInterface {
+	return &FakeTraits{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

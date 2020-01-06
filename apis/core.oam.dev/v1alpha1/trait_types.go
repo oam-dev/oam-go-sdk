@@ -40,6 +40,7 @@ type TraitSpec struct {
 type TraitStatus struct {
 }
 
+// +genclient
 // +kubebuilder:object:root=true
 // Trait is the Schema for the traits API
 type Trait struct {

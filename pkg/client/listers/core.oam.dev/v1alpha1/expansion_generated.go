@@ -16,6 +16,14 @@ limitations under the License.
 
 package v1alpha1
 
+// ApplicationConfigurationListerExpansion allows custom methods to be added to
+// ApplicationConfigurationLister.
+type ApplicationConfigurationListerExpansion interface{}
+
+// ApplicationConfigurationNamespaceListerExpansion allows custom methods to be added to
+// ApplicationConfigurationNamespaceLister.
+type ApplicationConfigurationNamespaceListerExpansion interface{}
+
 // ApplicationScopeListerExpansion allows custom methods to be added to
 // ApplicationScopeLister.
 type ApplicationScopeListerExpansion interface{}
@@ -31,3 +39,11 @@ type ComponentSchematicListerExpansion interface{}
 // ComponentSchematicNamespaceListerExpansion allows custom methods to be added to
 // ComponentSchematicNamespaceLister.
 type ComponentSchematicNamespaceListerExpansion interface{}
+
+// TraitListerExpansion allows custom methods to be added to
+// TraitLister.
+type TraitListerExpansion interface{}
+
+// TraitNamespaceListerExpansion allows custom methods to be added to
+// TraitNamespaceLister.
+type TraitNamespaceListerExpansion interface{}

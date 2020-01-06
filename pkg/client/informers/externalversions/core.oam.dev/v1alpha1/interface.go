@@ -22,10 +22,14 @@ import (
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
+	// ApplicationConfigurations returns a ApplicationConfigurationInformer.
+	ApplicationConfigurations() ApplicationConfigurationInformer
 	// ApplicationScopes returns a ApplicationScopeInformer.
 	ApplicationScopes() ApplicationScopeInformer
 	// ComponentSchematics returns a ComponentSchematicInformer.
 	ComponentSchematics() ComponentSchematicInformer
+	// Traits returns a TraitInformer.
+	Traits() TraitInformer
 }
 
 type version struct {
@@ -39,6 +43,11 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
 }
 
+// ApplicationConfigurations returns a ApplicationConfigurationInformer.
+func (v *version) ApplicationConfigurations() ApplicationConfigurationInformer {
+	return &applicationConfigurationInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
 // ApplicationScopes returns a ApplicationScopeInformer.
 func (v *version) ApplicationScopes() ApplicationScopeInformer {
 	return &applicationScopeInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
@@ -47,4 +56,9 @@ func (v *version) ApplicationScopes() ApplicationScopeInformer {
 // ComponentSchematics returns a ComponentSchematicInformer.
 func (v *version) ComponentSchematics() ComponentSchematicInformer {
 	return &componentSchematicInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// Traits returns a TraitInformer.
+func (v *version) Traits() TraitInformer {
+	return &traitInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
