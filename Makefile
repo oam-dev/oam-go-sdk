@@ -8,7 +8,7 @@ all: manager
 
 # Run tests
 test: generate fmt vet manifests
-	go test ./api/... ./pkg/... -coverprofile cover.out
+	go test ./apis/... ./pkg/... -coverprofile cover.out
 
 # Build manager binary
 examples: generate fmt vet
