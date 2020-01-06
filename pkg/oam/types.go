@@ -1,7 +1,7 @@
 package oam
 
 import (
-	"github.com/oam-dev/oam-go-sdk/api/v1alpha1"
+	"github.com/oam-dev/oam-go-sdk/apis/core.oam.dev/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
