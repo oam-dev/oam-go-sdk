@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"reflect"
 
-	"github.com/oam-dev/oam-go-sdk/api/v1alpha1"
+	"github.com/oam-dev/oam-go-sdk/apis/core.oam.dev/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
