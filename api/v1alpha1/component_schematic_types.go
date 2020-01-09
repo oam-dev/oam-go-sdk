@@ -230,10 +230,6 @@ type Parameter struct {
 	Default string `json:"default,omitempty"`
 }
 
-type Expose struct {
-	Name string `json:"name"`
-}
-
 type Consume struct {
 	Name string `json:"name"`
 	// +optional
@@ -252,8 +248,8 @@ type ComponentSpec struct {
 	// +optional
 	Containers []Container `json:"containers,omitempty"`
 
-	// +optional
-	Expose []Expose `json:"expose,omitempty"`
+	// +optional, global unique
+	Expose string `json:"expose,omitempty"`
 	// +optional
 	Consume []Consume `json:"consume,omitempty"`
 	// +optional
