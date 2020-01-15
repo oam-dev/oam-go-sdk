@@ -30,13 +30,10 @@ func main() {
 	oam.InitMgr(ctrl.GetConfigOrDie(), options)
 
 	// register workloadtpye & trait hooks and handlers
-	oam.RegisterPreHooks(oam.STypeWorkloadType, &PreHook{name: "wl"})
 	oam.RegisterHandlers(oam.STypeWorkloadType, &Handler{name: "wl"})
-	oam.RegisterPostHooks(oam.STypeWorkloadType, &PostHook{name: "wl"})
 
-	oam.RegisterPreHooks(oam.STypeTrait, &PreHook{name: "trait"})
 	oam.RegisterHandlers(oam.STypeTrait, &Handler{name: "trait"})
-	oam.RegisterPostHooks(oam.STypeTrait, &PostHook{name: "trait"})
+
 	// reconcilers must register manualy
 	// cloudnativeapp/oam-runtime/pkg/oam as a pkg should not do os.Exit(), instead of
 	// panic or returning Error could be better
@@ -46,25 +43,8 @@ func main() {
 	}
 }
 
-type PreHook struct {
-	name string
-}
-
 type Handler struct {
 	name string
-}
-
-type PostHook struct {
-	name string
-}
-
-func (p *PreHook) Exec(ctx *oam.ActionContext, ac runtime.Object, ev oam.EType) error {
-	setupLog.Info("hello oam from pre hook: " + p.name)
-	return nil
-}
-
-func (e *PreHook) Id() string {
-	return "PreHook"
 }
 
 func (s *Handler) Handle(ctx *oam.ActionContext, ac runtime.Object, eType oam.EType) error {
@@ -74,13 +54,4 @@ func (s *Handler) Handle(ctx *oam.ActionContext, ac runtime.Object, eType oam.ET
 
 func (s *Handler) Id() string {
 	return "Handler"
-}
-
-func (p *PostHook) Exec(ctx *oam.ActionContext, ac runtime.Object, ev oam.EType) error {
-	setupLog.Info("hello oam from post hook: " + p.name)
-	return nil
-}
-
-func (e *PostHook) Id() string {
-	return "PostHook"
 }

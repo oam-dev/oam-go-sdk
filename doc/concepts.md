@@ -1,10 +1,5 @@
 # Concepts
 
-## Hook
-Hook triggered by application configuration modify event and execute before or after handlers.
-
-User can implement Hook interface and make business logic done in hook , add action to action context, add values to action context.
-
 ## Handler
 Handler triggered by components, traits, scopes modify event.
 

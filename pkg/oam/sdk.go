@@ -12,22 +12,18 @@ import (
 type Option func() error
 
 type ControllerContext struct {
-	mgr       ctrl.Manager
-	l         *sync.RWMutex
-	handlers  map[SType][]Handler
-	preHooks  map[SType][]Hook
-	postHooks map[SType][]Hook
-	owns      map[SType][]runtime.Object
+	mgr      ctrl.Manager
+	l        *sync.RWMutex
+	handlers map[SType][]Handler
+	owns     map[SType][]runtime.Object
 }
 
 var (
 	oamLog            = ctrl.Log.WithName("oam")
 	controllerContext = ControllerContext{
-		handlers:  make(map[SType][]Handler),
-		preHooks:  make(map[SType][]Hook),
-		postHooks: make(map[SType][]Hook),
-		owns:      make(map[SType][]runtime.Object),
-		l:         new(sync.RWMutex),
+		handlers: make(map[SType][]Handler),
+		owns:     make(map[SType][]runtime.Object),
+		l:        new(sync.RWMutex),
 	}
 )
 
@@ -54,18 +50,6 @@ func RegisterHandlers(name SType, handlers ...Handler) {
 	controllerContext.handlers[name] = append(controllerContext.handlers[name], handlers...)
 }
 
-func RegisterPreHooks(name SType, hooks ...Hook) {
-	controllerContext.l.Lock()
-	defer controllerContext.l.Unlock()
-	controllerContext.preHooks[name] = append(controllerContext.preHooks[name], hooks...)
-}
-
-func RegisterPostHooks(name SType, hooks ...Hook) {
-	controllerContext.l.Lock()
-	defer controllerContext.l.Unlock()
-	controllerContext.postHooks[name] = append(controllerContext.postHooks[name], hooks...)
-}
-
 func Owns(name SType, owns ...runtime.Object) {
 	controllerContext.l.Lock()
 	defer controllerContext.l.Unlock()
@@ -77,22 +61,10 @@ func getOwns(name SType) []runtime.Object {
 	return controllerContext.owns[name]
 }
 
-func getPostHooks(name SType) []Hook {
-	controllerContext.l.RLock()
-	defer controllerContext.l.RUnlock()
-	return controllerContext.postHooks[name]
-}
-
 func getHandlers(name SType) []Handler {
 	controllerContext.l.RLock()
 	defer controllerContext.l.RUnlock()
 	return controllerContext.handlers[name]
-}
-
-func getPreHooks(name SType) []Hook {
-	controllerContext.l.RLock()
-	defer controllerContext.l.RUnlock()
-	return controllerContext.preHooks[name]
 }
 
 func withSpec(tp SType) Option {

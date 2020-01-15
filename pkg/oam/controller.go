@@ -62,23 +62,6 @@ func (r *Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		eType = Delete
 	}
 
-	// invoke preHooks
-	preHooks := getPreHooks(name)
-	for _, h := range preHooks {
-		if err := h.Exec(actionCtx, conf, eType); err != nil {
-			// todo: add events
-			log.Error(err, "pre hook exec error", "hook id", h.Id())
-			return ctrl.Result{}, err
-		}
-	}
-
-	// do pre hook related actions
-	if err := r.doActions(actionCtx, log); err != nil {
-		// todo: add events
-		log.Error(err, "do pre hook related actions error")
-		return ctrl.Result{}, err
-	}
-
 	// invoke handler
 	handlers := getHandlers(name)
 	// ApplicationConfiguration contains Components fileds, how applicationConfiguration
@@ -106,21 +89,6 @@ func (r *Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-	// invoke postHooks
-	// you can register a post hook aggregate components statues when it is not delete operation
-	postHooks := getPostHooks(name)
-	for _, h := range postHooks {
-		if err := h.Exec(actionCtx, conf, eType); err != nil {
-			log.Error(err, "post hook exec error", "hook id", h.Id())
-			return ctrl.Result{}, err
-		}
-	}
-
-	// do post hook related actions
-	if err := r.doActions(actionCtx, log); err != nil {
-		log.Error(err, "do post hook related actions error")
-		return ctrl.Result{}, err
-	}
 
 	return ctrl.Result{}, nil
 }

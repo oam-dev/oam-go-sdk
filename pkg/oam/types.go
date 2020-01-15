@@ -35,18 +35,6 @@ const (
 	CmdTypeDelete CmdType = "Delete"
 )
 
-// Hook triggered by application configuration modify event and execute before or after handlers.
-
-// Side effects should be occurred in hook and state should be stored in ctx, the framework will pass
-// ctx along this reconcile.
-
-// ac is modified ApplicationConfiguration.
-
-type Hook interface {
-	Identity
-	Exec(ctx *ActionContext, ac runtime.Object, EventType EType) error
-}
-
 // Handler triggered by components, traits, scopes modify event, actions should be generate and add to ctx.
 // For actions need to be processed early, use ctx.AddPre; for actions need to be processed late, use ctx.AddPost.
 // For normal actions, just  use ctx.Add, OAM framework will do preActions -> actions -> postActions for you.
