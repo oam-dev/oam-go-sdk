@@ -33,9 +33,7 @@ func main() {
 	oam.InitMgr(ctrl.GetConfigOrDie(), options)
 
 	// register workloadtpye & trait hooks and handlers
-	oam.RegisterPreHooks(oam.STypeComponent, &PreHook{name: "comp"})
 	oam.RegisterHandlers(oam.STypeComponent, &Handler{name: "comp"})
-	oam.RegisterPostHooks(oam.STypeComponent, &PostHook{name: "comp"})
 
 	// reconcilers must register manualy
 	// cloudnativeapp/oam-runtime/pkg/oam as a pkg should not do os.Exit(), instead of
@@ -46,25 +44,8 @@ func main() {
 	}
 }
 
-type PreHook struct {
-	name string
-}
-
 type Handler struct {
 	name string
-}
-
-type PostHook struct {
-	name string
-}
-
-func (p *PreHook) Exec(ctx *oam.ActionContext, comp runtime.Object, ev oam.EType) error {
-	setupLog.Info("hello oam from pre hook: " + p.name)
-	return nil
-}
-
-func (e *PreHook) Id() string {
-	return "PreHook"
 }
 
 func (s *Handler) Handle(ctx *oam.ActionContext, comp runtime.Object, eType oam.EType) error {
@@ -87,13 +68,4 @@ func (s *Handler) Handle(ctx *oam.ActionContext, comp runtime.Object, eType oam.
 
 func (s *Handler) Id() string {
 	return "Handler"
-}
-
-func (p *PostHook) Exec(ctx *oam.ActionContext, comp runtime.Object, ev oam.EType) error {
-	setupLog.Info("hello oam from post hook: " + p.name)
-	return nil
-}
-
-func (e *PostHook) Id() string {
-	return "PostHook"
 }
