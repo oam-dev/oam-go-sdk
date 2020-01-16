@@ -1,6 +1,6 @@
 module github.com/oam-dev/oam-go-sdk
 
-go 1.12
+go 1.13
 
 require (
 	github.com/go-logr/logr v0.1.0
