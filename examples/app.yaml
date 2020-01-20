@@ -19,11 +19,7 @@ spec:
       traits:
         - name: rollout
           properties:
-            - name: canaryReplicas
-              value: "2"
-            - name: batches
-              value: "2"
-            - name: batchInterval
-              value: "10"
-            - name: instanceInterval
-              value: "1"
+            canaryReplicas: "2"
+            batches: "2"
+            batchInterval: "10"
+            instanceInterval: "1"
