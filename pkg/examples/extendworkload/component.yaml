@@ -10,5 +10,5 @@ spec:
   workloadType: example.com/v1alpha1.ExtentionWorkload
   workloadSettings:
     Protocol: Example
-    Type: ${Type}
+    Type: "[fromParam(Type)]"
     Description: xxx

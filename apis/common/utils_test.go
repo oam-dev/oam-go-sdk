@@ -18,12 +18,12 @@ func Test_matchPattern(t *testing.T) {
 		expKey   string
 	}{
 		{
-			value:    "${value}",
+			value:    "[fromParam(value)]",
 			expMatch: true,
 			expKey:   "value",
 		},
 		{
-			value:    "${}",
+			value:    "[fromParam()]",
 			expMatch: true,
 			expKey:   "",
 		},
@@ -38,9 +38,9 @@ func Test_matchPattern(t *testing.T) {
 			expKey:   "",
 		},
 		{
-			value:    "${${xxx}}",
+			value:    "[fromParam([fromParam(xxx)])]",
 			expMatch: true,
-			expKey:   "${xxx}",
+			expKey:   "[fromParam(xxx)]",
 		},
 	}
 	for _, ti := range tests {
@@ -97,7 +97,7 @@ func Test_ExtractFromMap(t *testing.T) {
 		{
 			params: params,
 			values: map[string]interface{}{
-				"k1": "${k1}",
+				"k1": "[fromParam(k1)]",
 				"k2": "${",
 			},
 			expValues: map[string]interface{}{
@@ -108,9 +108,9 @@ func Test_ExtractFromMap(t *testing.T) {
 		{
 			params: params,
 			values: map[string]interface{}{
-				"k1": "${k1}",
+				"k1": "[fromParam(k1)]",
 				"k2": map[string]interface{}{
-					"k3": "${k3}",
+					"k3": "[fromParam(k3)]",
 					"k4": 12,
 				},
 			},
@@ -131,13 +131,13 @@ func Test_ExtractFromMap(t *testing.T) {
 
 func TestExtractParams(t *testing.T) {
 	j1, _ := json.Marshal(map[string]interface{}{
-		"k1": "${k1}",
-		"k2": "${",
+		"k1": "[fromParam(k1)]",
+		"k2": "[fromParam(",
 	})
 	j2, _ := json.Marshal(map[string]interface{}{
-		"k1": "${k1}",
+		"k1": "[fromParam(k1)]",
 		"k2": map[string]interface{}{
-			"k3": "${k3}",
+			"k3": "[fromParam(k3)]",
 			"k4": "12",
 		},
 	})
@@ -156,7 +156,7 @@ func TestExtractParams(t *testing.T) {
 			values: runtime.RawExtension{Raw: j1},
 			expValues: map[string]interface{}{
 				"k1": "v1",
-				"k2": "${",
+				"k2": "[fromParam(",
 			},
 		},
 		{

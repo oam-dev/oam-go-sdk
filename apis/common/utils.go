@@ -10,8 +10,8 @@ import (
 
 func matchPattern(value string) (match bool, key string) {
 	value = strings.TrimSpace(value)
-	if strings.HasPrefix(value, "${") && strings.HasSuffix(value, "}") {
-		key = strings.TrimSuffix(strings.TrimPrefix(value, "${"), "}")
+	if strings.HasPrefix(value, "[fromParam(") && strings.HasSuffix(value, ")]") {
+		key = strings.TrimSuffix(strings.TrimPrefix(value, "[fromParam("), ")]")
 		return true, key
 	}
 	return false, ""

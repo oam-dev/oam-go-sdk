@@ -89,7 +89,6 @@ func (r *Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-
 	return ctrl.Result{}, nil
 }
 

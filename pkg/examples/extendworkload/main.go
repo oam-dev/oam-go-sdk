@@ -76,7 +76,9 @@ func (s *Handler) Handle(ctx *oam.ActionContext, comp runtime.Object, eType oam.
 			fmt.Printf("%s: %s\n", k, v)
 		}
 	}
-	return nil
+	appConfig.Status.Phase = "updated"
+	_, err := s.client.CoreV1alpha1().ApplicationConfigurations(appConfig.Namespace).UpdateStatus(appConfig)
+	return err
 }
 
 func (s *Handler) Id() string {
