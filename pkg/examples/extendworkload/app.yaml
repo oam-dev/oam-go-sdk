@@ -1,0 +1,11 @@
+apiVersion: core.oam.dev/v1alpha1
+kind: ApplicationConfiguration
+metadata:
+  name: example-app
+spec:
+  components:
+    - componentName: example-workload
+      instanceName: demo
+      parameterValues:
+        - name: Type
+          value: demo

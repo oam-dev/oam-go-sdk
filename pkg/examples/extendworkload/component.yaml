@@ -10,7 +10,4 @@ spec:
   workloadType: example.com/v1alpha1.ExtentionWorkload
   workloadSettings:
     Protocol: Example
-    Type: Performance
-    Description: xxx
-  expose:
-    - name: exampleOutput
+    Type: "[fromParam(Type)]"
