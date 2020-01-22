@@ -11,4 +11,3 @@ spec:
   workloadSettings:
     Protocol: Example
     Type: "[fromParam(Type)]"
-    Description: xxx
