@@ -23,3 +23,11 @@ spec:
             batches: "2"
             batchInterval: "10"
             instanceInterval: "1"
+        - name: servicebinding
+          properties:
+            servicebindings:
+            - source:
+                objectRef:
+                  apiVersion: v1
+                  kind: Secret
+                  name: my-secret

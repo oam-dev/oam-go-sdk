@@ -230,12 +230,6 @@ type Parameter struct {
 	Default string `json:"default,omitempty"`
 }
 
-type Consume struct {
-	Name string `json:"name"`
-	// +optional
-	As string `json:"as"`
-}
-
 // ComponentSpec defines the desired state of ComponentSchematic
 type ComponentSpec struct {
 	// +optional
@@ -248,10 +242,6 @@ type ComponentSpec struct {
 	// +optional
 	Containers []Container `json:"containers,omitempty"`
 
-	// +optional, global unique
-	Expose string `json:"expose,omitempty"`
-	// +optional
-	Consume []Consume `json:"consume,omitempty"`
 	// +optional
 	WorkloadSettings runtime.RawExtension `json:"workloadSettings,omitempty"`
 }

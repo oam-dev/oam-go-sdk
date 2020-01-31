@@ -3,7 +3,6 @@ kind: Trait
 metadata:
   name: rollout
 spec:
-  type: edas.aliyun.com/v1alpha1.Rollout
   appliesTo:
     - core.oam.dev/v1alpha1.Server
   properties: >
@@ -26,6 +25,59 @@ spec:
         "instanceInterval": {
           "type": "number",
           "description": "interval time in second between instances within batch."
+        }
+      }
+    }
+
+---
+apiVersion: core.oam.dev/v1alpha1
+kind: Trait
+metadata:
+  name: servicebinding
+spec:
+  appliesTo:
+    - core.oam.dev/v1alpha1.Server
+  properties: |
+    {
+      "type": "object"
+      "properties": {
+        "servicebindings": {
+          "type": "array"
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectRef": {
+                "$ref": "#/definitions/ObjectReference"
+              }
+            }
+          }
+        },
+      }
+      "definitions": {
+        "ObjectReference": {
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "uid": {
+              "type": "string"
+            },
+            "apiVersion": {
+              "type": "string"
+            },
+            "resourceVersion": {
+              "type": "string"
+            },
+            "fieldPath": {
+              "type": "string"
+            }
+          }
         }
       }
     }
