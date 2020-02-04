@@ -144,6 +144,7 @@ const (
 
 // +genclient
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 // ApplicationConfiguration is the Schema for the operationalconfigurations API
 type ApplicationConfiguration struct {
 	metav1.TypeMeta   `json:",inline"`

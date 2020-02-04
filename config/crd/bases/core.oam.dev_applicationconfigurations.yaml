@@ -16,7 +16,6 @@ spec:
     singular: applicationconfiguration
   scope: Namespaced
   subresources:
-    # see https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/#status-subresource
     status: {}
   validation:
     openAPIV3Schema:
