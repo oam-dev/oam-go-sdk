@@ -49,3 +49,23 @@ You could see our workloadType in `pkg/examples/extendworkload/workloadtype.yaml
 
 So we could use `map[string]interface{}` to parse our output, so we could get more concrete data struct.
 
+
+## New CRD 
+
+### install new CRD
+
+```shell script
+kubectl apply -f pkg/examples/extendworkload/new-crd.yaml
+```
+
+### Run demo with new CRD
+
+```shell script
+go run main.go --new-crd=true
+```
+
+## Apply app in new crd
+
+```shell script
+kubectl apply -f pkg/examples/extendworkload/app-new-crd.yaml
+```

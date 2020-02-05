@@ -67,7 +67,7 @@ func getHandlers(name SType) []Handler {
 	return controllerContext.handlers[name]
 }
 
-func withSpec(tp SType) Option {
+func WithSpec(tp SType) Option {
 	return func() error {
 		return (&Reconciler{
 			specType:          tp,
@@ -82,28 +82,28 @@ func withSpec(tp SType) Option {
 
 // WithComponent registers Component reconciler
 func WithComponent() Option {
-	return withSpec(STypeComponent)
+	return WithSpec(STypeComponent)
 
 }
 
 // WithScpe registers Scpe reconciler
 func WithScope() Option {
-	return withSpec(STypeScope)
+	return WithSpec(STypeScope)
 }
 
 // WithWorkloadType registers WorkloadType reconciler
 func WithWorkloadType() Option {
-	return withSpec(STypeWorkloadType)
+	return WithSpec(STypeWorkloadType)
 }
 
 // WithTrait registers Trait reconciler
 func WithTrait() Option {
-	return withSpec(STypeTrait)
+	return WithSpec(STypeTrait)
 }
 
 // WithApplicationConfiguration registers ApplicationConfiguration reconciler
 func WithApplicationConfiguration() Option {
-	return withSpec(STypeApplicationConfiguration)
+	return WithSpec(STypeApplicationConfiguration)
 }
 func Run(options ...Option) error {
 	for _, o := range options {

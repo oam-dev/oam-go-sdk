@@ -1,6 +1,9 @@
 package oam
 
 import (
+	"fmt"
+	"sync"
+
 	"github.com/oam-dev/oam-go-sdk/apis/core.oam.dev/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -59,20 +62,38 @@ const (
 	STypeTrait                    = "trait"
 )
 
+var stypes = make(map[SType]runtime.Object)
+var typeLock sync.Mutex
+
+func init() {
+	stypes[STypeScope] = new(v1alpha1.ApplicationScope)
+	stypes[STypeTrait] = new(v1alpha1.Trait)
+	stypes[STypeWorkloadType] = new(v1alpha1.WorkloadType)
+	stypes[STypeComponent] = new(v1alpha1.ComponentSchematic)
+	stypes[STypeApplicationConfiguration] = new(v1alpha1.ApplicationConfiguration)
+}
+
+func RegisterObject(tp SType, obj runtime.Object) {
+	typeLock.Lock()
+	defer typeLock.Unlock()
+	stypes[tp] = obj
+}
+
 // RuntimeObj returns one of oam Objects matched the SType
 func (s SType) RuntimeObj() runtime.Object {
-	switch s {
-	case STypeScope:
-		return new(v1alpha1.ApplicationScope)
-	case STypeTrait:
-		return new(v1alpha1.Trait)
-	case STypeWorkloadType:
-		return new(v1alpha1.WorkloadType)
-	case STypeComponent:
-		return new(v1alpha1.ComponentSchematic)
-	case STypeApplicationConfiguration:
-		return new(v1alpha1.ApplicationConfiguration)
-	default:
-		panic("invalide spec type")
+	obj, err := s.GetRuntimeObj()
+	if err == nil {
+		return obj
 	}
+	panic("invalid spec type")
+}
+
+func (s SType) GetRuntimeObj() (runtime.Object, error) {
+	typeLock.Lock()
+	obj, ok := stypes[s]
+	typeLock.Unlock()
+	if ok {
+		return obj, nil
+	}
+	return nil, fmt.Errorf("can't get spec type '%s', please register it", s)
 }
