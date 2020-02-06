@@ -29,3 +29,9 @@ func TestRegisterStatusHandler(t *testing.T) {
 	assert.Equal(t, StatusUnknown, as.Modules[1].Status)
 	assert.Equal(t, StatusProgressing, string(as.Phase))
 }
+
+func TestNoModules(t *testing.T) {
+	as := new(ApplicationConfigurationStatus)
+	as.Update([]metav1.Object{}, nil)
+	assert.Equal(t, StatusProgressing, string(as.Phase))
+}

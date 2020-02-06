@@ -86,6 +86,9 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 	}
 
 	// aggregate
+	if len(m.Modules) == 0 {
+		ready = false
+	}
 	for _, os := range m.Modules {
 		if os.Status != StatusReady {
 			ready = false
