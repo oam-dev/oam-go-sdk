@@ -1,41 +1,16 @@
 package v1alpha1
 
 import (
-	"fmt"
-	"sync"
-
+	"github.com/oam-dev/oam-go-sdk/apis/flags"
+	"github.com/oam-dev/oam-go-sdk/apis/handlers"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/api/extensions/v1beta1"
 	policyv1 "k8s.io/api/policy/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 )
-
-// ComponentConfiguration status
-const (
-	StatusReady       = "Ready"
-	StatusProgressing = "Progressing"
-	StatusFailed      = "Failed"
-	StatusUnknown     = "Unknown"
-)
-
-type StatusHander func(rsrc metav1.Object) string
-
-var statusHandlers = make(map[string]StatusHander)
-var statusHandlerLock sync.Mutex
-
-func FormatGVK(gvk schema.GroupVersionKind) string {
-	return fmt.Sprintf("%s/%s.%s", gvk.Group, gvk.Version, gvk.Kind)
-}
-
-func RegisterStatusHandler(gvk schema.GroupVersionKind, handler StatusHander) {
-	statusHandlerLock.Lock()
-	defer statusHandlerLock.Unlock()
-	statusHandlers[FormatGVK(gvk)] = handler
-}
 
 // Update component status with specific status and meta info.
 func (s *ModuleStatus) Update(rsrc metav1.Object, status string) {
@@ -59,7 +34,7 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 	// compute components status
 	for _, r := range rsrcs {
 		os := ModuleStatus{}
-		os.Update(r, StatusReady)
+		os.Update(r, flags.StatusReady)
 		switch r.(type) {
 		case *appsv1.StatefulSet:
 			os.Status = stsStatus(r.(*appsv1.StatefulSet))
@@ -80,7 +55,7 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 		case *v1beta1.Ingress:
 			os.Status = ingressStatus(r.(*v1beta1.Ingress))
 		default:
-			os.Status = tryHandler(r)
+			os.Status = handlers.TryStatusHandler(r)
 		}
 		m.Modules = append(m.Modules, os)
 	}
@@ -90,7 +65,7 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 		ready = false
 	}
 	for _, os := range m.Modules {
-		if os.Status != StatusReady {
+		if os.Status != flags.StatusReady {
 			ready = false
 		}
 	}
@@ -106,31 +81,19 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 	}
 }
 
-func tryHandler(r metav1.Object) string {
-	if ro, ok := r.(runtime.Object); ok {
-		statusHandlerLock.Lock()
-		handler, ok := statusHandlers[FormatGVK(ro.GetObjectKind().GroupVersionKind())]
-		statusHandlerLock.Unlock()
-		if ok {
-			return handler(r)
-		}
-	}
-	return StatusUnknown
-}
-
 // Resource specific logic -----------------------------------
 
 // Statefulset
 func stsStatus(rsrc *appsv1.StatefulSet) string {
 	if rsrc.Status.ReadyReplicas == *rsrc.Spec.Replicas && rsrc.Status.CurrentReplicas == *rsrc.Spec.Replicas {
-		return StatusReady
+		return flags.StatusReady
 	}
-	return StatusProgressing
+	return flags.StatusProgressing
 }
 
 // Deployment
 func deploymentStatus(rsrc *appsv1.Deployment) string {
-	status := StatusProgressing
+	status := flags.StatusProgressing
 	progress := true
 	available := true
 	for _, c := range rsrc.Status.Conditions {
@@ -148,7 +111,7 @@ func deploymentStatus(rsrc *appsv1.Deployment) string {
 	}
 
 	if progress && available {
-		status = StatusReady
+		status = flags.StatusReady
 	}
 
 	return status
@@ -156,7 +119,7 @@ func deploymentStatus(rsrc *appsv1.Deployment) string {
 
 // Replicaset
 func replicasetStatus(rsrc *appsv1.ReplicaSet) string {
-	status := StatusProgressing
+	status := flags.StatusProgressing
 	failure := false
 	for _, c := range rsrc.Status.Conditions {
 		switch c.Type {
@@ -170,7 +133,7 @@ func replicasetStatus(rsrc *appsv1.ReplicaSet) string {
 	}
 
 	if !failure && rsrc.Status.ReadyReplicas == rsrc.Status.Replicas && rsrc.Status.Replicas == rsrc.Status.AvailableReplicas {
-		status = StatusReady
+		status = flags.StatusReady
 	}
 
 	return status
@@ -178,30 +141,30 @@ func replicasetStatus(rsrc *appsv1.ReplicaSet) string {
 
 // Daemonset
 func daemonsetStatus(rsrc *appsv1.DaemonSet) string {
-	status := StatusProgressing
+	status := flags.StatusProgressing
 	if rsrc.Status.DesiredNumberScheduled == rsrc.Status.NumberAvailable && rsrc.Status.DesiredNumberScheduled == rsrc.Status.NumberReady {
-		status = StatusReady
+		status = flags.StatusReady
 	}
 	return status
 }
 
 // PVC
 func pvcStatus(rsrc *corev1.PersistentVolumeClaim) string {
-	status := StatusProgressing
+	status := flags.StatusProgressing
 	if rsrc.Status.Phase == corev1.ClaimBound {
-		status = StatusReady
+		status = flags.StatusReady
 	}
 	return status
 }
 
 // Service
 func serviceStatus(rsrc *corev1.Service) string {
-	status := StatusReady
+	status := flags.StatusReady
 	if rsrc.Spec.Type == corev1.ServiceTypeLoadBalancer {
 		// For LoadBalancer, we need to wait ingress bind
 		if len(rsrc.Status.LoadBalancer.Ingress) == 0 {
 			// if no bind
-			status = StatusProgressing
+			status = flags.StatusProgressing
 		}
 	}
 	return status
@@ -209,21 +172,21 @@ func serviceStatus(rsrc *corev1.Service) string {
 
 // Ingress
 func ingressStatus(rsrc *v1beta1.Ingress) string {
-	status := StatusReady
+	status := flags.StatusReady
 	if len(rsrc.Status.LoadBalancer.Ingress) == 0 {
 		// if no bind
-		status = StatusProgressing
+		status = flags.StatusProgressing
 	}
 	return status
 }
 
 // Pod
 func podStatus(rsrc *corev1.Pod) string {
-	status := StatusProgressing
+	status := flags.StatusProgressing
 	for i := range rsrc.Status.Conditions {
 		if rsrc.Status.Conditions[i].Type == corev1.PodReady &&
 			rsrc.Status.Conditions[i].Status == corev1.ConditionTrue {
-			status = StatusReady
+			status = flags.StatusReady
 			break
 		}
 	}
@@ -233,7 +196,7 @@ func podStatus(rsrc *corev1.Pod) string {
 // PodDisruptionBudget
 func pdbStatus(rsrc *policyv1.PodDisruptionBudget) string {
 	if rsrc.Status.CurrentHealthy >= rsrc.Status.DesiredHealthy {
-		return StatusReady
+		return flags.StatusReady
 	}
-	return StatusProgressing
+	return flags.StatusProgressing
 }
