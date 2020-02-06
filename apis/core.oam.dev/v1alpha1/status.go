@@ -1,12 +1,16 @@
 package v1alpha1
 
 import (
+	"fmt"
+	"sync"
+
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/api/extensions/v1beta1"
 	policyv1 "k8s.io/api/policy/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 )
 
@@ -15,7 +19,23 @@ const (
 	StatusReady       = "Ready"
 	StatusProgressing = "Progressing"
 	StatusFailed      = "Failed"
+	StatusUnknown     = "Unknown"
 )
+
+type StatusHander func(rsrc metav1.Object) string
+
+var statusHandlers = make(map[string]StatusHander)
+var statusHandlerLock sync.Mutex
+
+func FormatGVK(gvk schema.GroupVersionKind) string {
+	return fmt.Sprintf("%s/%s.%s", gvk.Group, gvk.Version, gvk.Kind)
+}
+
+func RegisterStatusHandler(gvk schema.GroupVersionKind, handler StatusHander) {
+	statusHandlerLock.Lock()
+	defer statusHandlerLock.Unlock()
+	statusHandlers[FormatGVK(gvk)] = handler
+}
 
 // Update component status with specific status and meta info.
 func (s *ModuleStatus) Update(rsrc metav1.Object, status string) {
@@ -60,7 +80,7 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 		case *v1beta1.Ingress:
 			os.Status = ingressStatus(r.(*v1beta1.Ingress))
 		default:
-			os.Status = StatusReady
+			os.Status = tryHandler(r)
 		}
 		m.Modules = append(m.Modules, os)
 	}
@@ -81,6 +101,18 @@ func (m *ApplicationConfigurationStatus) Update(rsrcs []metav1.Object, err error
 	if err != nil {
 		m.SetConditionTrue(Error, "ErrorSeen", err.Error())
 	}
+}
+
+func tryHandler(r metav1.Object) string {
+	if ro, ok := r.(runtime.Object); ok {
+		statusHandlerLock.Lock()
+		handler, ok := statusHandlers[FormatGVK(ro.GetObjectKind().GroupVersionKind())]
+		statusHandlerLock.Unlock()
+		if ok {
+			return handler(r)
+		}
+	}
+	return StatusUnknown
 }
 
 // Resource specific logic -----------------------------------
