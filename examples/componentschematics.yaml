@@ -1,30 +1,13 @@
 apiVersion: core.oam.dev/v1alpha1
 kind: ComponentSchematic
 metadata:
-  name: stateless
+  name: stateless-component
 spec:
   workloadType: core.oam.dev/v1alpha1.Server
   containers:
-    - name: sample
-      image: "somefive/hello-world:dev"
-      resources:
-        cpu: 
-          required: 100m
-        memory: 
-          required: 200MB
-      env:
-        - name: k1
-          fromValue: k1
-        - name: k2
-          fromValue: k2
+    - name: server
+      image: nginx:latest
       ports:
-        - name: p1
+        - name: http
           containerPort: 80
           protocol: TCP
-  parameters:
-    - name: k1
-      type: string
-      default: "hello"
-    - name: k2
-      type: string
-      default: "world"
