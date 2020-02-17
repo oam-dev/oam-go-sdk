@@ -27,7 +27,7 @@ For more concepts in this SDK, please refer to [concepts.md](./doc/concepts.md).
 
 ## Getting started
 
-There is an example implementation of OAM runtime using SDK in _pkg/example/main.go_. We recommend reading the code as a starting point.
+There is an example implementation of OAM runtime using SDK in _pkg/example/framework/main.go_. We recommend reading the code as a starting point.
 
 We could run the code and deploy OAM app by running following commands:
 
@@ -40,11 +40,18 @@ export GO111MODULE=on
 make install
 
 # run example
-go run pkg/example/main.go
+go run pkg/examples/framework/main.go
+
+# deploy OAM component
+kubectl apply -f examples/componentschematics.yaml
 
 # deploy OAM app
 kubectl apply -f examples/app.yaml
 ```
+
+This example will create a deployment as `Server` workload.
+
+There is another example which will show you how to build more extensions. Read the [doc](pkg/examples/extendworkload/README.md) for more details.
 
 ## Misc.
 

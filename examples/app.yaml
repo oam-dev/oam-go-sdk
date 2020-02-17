@@ -6,23 +6,10 @@ spec:
   components:
     - componentName: stateless-component
       instanceName: demo
-      parameterValues:
-        - name: description
-          value: demo
-        - name: replicas
-          value: "5"
-        - name: image
-          value: "somefive/hello-world:dev"
-        - name: envs
-          value: >
-            [{"Name":"k1", "Value":"v1"},{"Name":"k2", "Value":"v2"}]
       traits:
-        - name: rollout
+        - name: manual-scaler
           properties:
-            canaryReplicas: "2"
-            batches: "2"
-            batchInterval: "10"
-            instanceInterval: "1"
+            replicaCount: 2
         - name: servicebinding
           properties:
             servicebindings:
