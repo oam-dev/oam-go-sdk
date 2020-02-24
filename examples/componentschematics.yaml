@@ -7,6 +7,11 @@ spec:
   containers:
     - name: server
       image: nginx:latest
+      resources: 
+        cpu: 
+         required: 100m
+        memory: 
+         required: 128Mi
       ports:
         - name: http
           containerPort: 80
