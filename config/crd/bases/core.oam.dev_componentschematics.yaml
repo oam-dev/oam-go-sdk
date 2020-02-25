@@ -326,7 +326,6 @@ spec:
                 required:
                 - image
                 - name
-                - resources
                 type: object
               type: array
             osType:

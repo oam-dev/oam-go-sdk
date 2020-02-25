@@ -178,6 +178,7 @@ type ConfigFile struct {
 type Container struct {
 	Name      string    `json:"name"`
 	Image     string    `json:"image"`
+	// +optional
 	Resources Resources `json:"resources"`
 	// +optional
 	Cmd []string `json:"cmd,omitempty"`
