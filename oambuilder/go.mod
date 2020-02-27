@@ -20,7 +20,7 @@ require (
 	k8s.io/apimachinery v0.0.0-20191203211716-adc6f4cd9e7d
 	k8s.io/client-go v0.0.0-20190918160344-1fbdaa4c8d90
 	sigs.k8s.io/controller-runtime v0.4.0
-	sigs.k8s.io/controller-tools v0.2.4
+	sigs.k8s.io/controller-tools v0.2.5
 	sigs.k8s.io/kubebuilder v1.0.9-0.20191119230719-0824a139f59e
 	sigs.k8s.io/yaml v1.1.0
 )
