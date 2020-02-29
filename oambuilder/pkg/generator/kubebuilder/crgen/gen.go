@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gobuffalo/flect"
-	oamv1alpha1 "github.com/oam-dev/oam-go-sdk/oambuilder/api/v1alpha1"
+	oamv1alpha1 "github.com/oam-dev/oam-go-sdk/apis/core.oam.dev/v1alpha1"
 	"github.com/oam-dev/oam-go-sdk/oambuilder/pkg/types"
 	"github.com/oam-dev/oam-go-sdk/oambuilder/pkg/types/project"
 	apiext "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -105,13 +105,13 @@ func (g *Generator) walkWorkloads(p *project.OAMProject) ([]*File, error) {
 				CreationTimestamp: metav1.Time{time.Now()},
 			},
 			Spec: oamv1alpha1.WorkloadTypeSpec{
-				Group:   group,
-				Version: t.Version,
 				Names: oamv1alpha1.Names{
 					Kind:     t.Kind,
 					Singular: lowerKind,
 					Plural:   flect.Pluralize(lowerKind),
 				},
+				Group:   group,
+				Version: t.Version,
 			},
 		}
 		if s, ok := g.schemaMap[tmplGVKString(group, t.Version, t.Kind)]; ok {
@@ -134,7 +134,13 @@ func (g *Generator) walkWorkloads(p *project.OAMProject) ([]*File, error) {
 				p.ParameterType = t
 				settings = append(settings, p)
 			}
-			tt.Spec.Settings = settings
+			var settingString string
+			tmp, err := json.Marshal(settings)
+			if err != nil {
+				return nil, err
+			}
+			settingString = string(tmp)
+			tt.Spec.Settings = settingString
 		}
 		c, err := yaml.Marshal(tt)
 		if err != nil {
