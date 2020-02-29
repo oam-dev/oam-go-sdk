@@ -134,13 +134,11 @@ func (g *Generator) walkWorkloads(p *project.OAMProject) ([]*File, error) {
 				p.ParameterType = t
 				settings = append(settings, p)
 			}
-			var settingsString string
 			settingsBytes, err := json.Marshal(settings)
 			if err != nil {
 				return nil, err
 			}
-			settingsString = string(settingsBytes)
-			tt.Spec.Settings = settingsString
+			tt.Spec.Settings = string(settingsBytes)
 		}
 		c, err := yaml.Marshal(tt)
 		if err != nil {
