@@ -52,13 +52,17 @@ spec:
                     items:
                       description: / A value that is substituted into a parameter.
                       properties:
+                        from:
+                          properties:
+                            component:
+                              type: string
+                            fieldPath:
+                              type: string
+                          type: object
                         name:
                           type: string
                         value:
                           type: string
-                      required:
-                      - name
-                      - value
                       type: object
                     type: array
                   refName:
