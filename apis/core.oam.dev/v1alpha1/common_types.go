@@ -7,8 +7,14 @@ import (
 
 /// A value that is substituted into a parameter.
 type ParameterValue struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+	Name  string         `json:"name,omitempty"`
+	Value string         `json:"value,omitempty"`
+	From  *ParameterFrom `json:"from,omitempty"`
+}
+
+type ParameterFrom struct {
+	Component string `json:"component,omitempty"`
+	FieldPath string `json:"fieldPath,omitempty"`
 }
 
 /**
