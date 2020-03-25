@@ -222,7 +222,7 @@ func NewForConfig(c *rest.Config) (*rest.RESTClient, error) {
 	config := *c
 	config.ContentConfig.GroupVersion = &schema.GroupVersion{Group: "ros.alibaba.com", Version: "v1alpha1"}
 	config.APIPath = "/apis"
-	config.NegotiatedSerializer = serializer.WithoutConversionCodecFactory{CodecFactory: serializer.NewCodecFactory(myscheme)}
+	config.NegotiatedSerializer = serializer.NewCodecFactory(myscheme)
 	config.UserAgent = rest.DefaultKubernetesUserAgent()
 
 	client, err := rest.RESTClientFor(&config)
