@@ -57,11 +57,12 @@ docker-push:
 
 # find or download controller-gen
 # download controller-gen if necessary
-# make sure use controller-gen v0.2.1
+# make sure use controller-gen v0.2.0
 controller-gen:
-ifeq (, $(shell which controller-gen))
-	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.5
-CONTROLLER_GEN=$(shell go env GOPATH)/bin/controller-gen
+ifeq (, $(shell which controller-gen-0.2))
+	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.0
+	mv $(shell go env GOPATH)/bin/controller-gen $(shell go env GOPATH)/bin/controller-gen-0.2
+CONTROLLER_GEN=$(shell go env GOPATH)/bin/controller-gen-0.2
 else
-CONTROLLER_GEN=$(shell which controller-gen)
+CONTROLLER_GEN=$(shell which controller-gen-0.2)
 endif

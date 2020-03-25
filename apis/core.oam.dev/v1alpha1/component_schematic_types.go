@@ -176,8 +176,8 @@ type ConfigFile struct {
 
 // Container describes the container configuration for a Component.
 type Container struct {
-	Name      string    `json:"name"`
-	Image     string    `json:"image"`
+	Name  string `json:"name"`
+	Image string `json:"image"`
 	// +optional
 	Resources Resources `json:"resources"`
 	// +optional

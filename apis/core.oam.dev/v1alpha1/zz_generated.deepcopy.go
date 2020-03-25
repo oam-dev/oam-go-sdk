@@ -71,7 +71,7 @@ func (in *ApplicationConfiguration) DeepCopyObject() runtime.Object {
 func (in *ApplicationConfigurationList) DeepCopyInto(out *ApplicationConfigurationList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	out.ListMeta = in.ListMeta
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]ApplicationConfiguration, len(*in))
@@ -191,7 +191,7 @@ func (in *ApplicationScope) DeepCopyObject() runtime.Object {
 func (in *ApplicationScopeList) DeepCopyInto(out *ApplicationScopeList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	out.ListMeta = in.ListMeta
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]ApplicationScope, len(*in))
@@ -335,7 +335,7 @@ func (in *ComponentSchematic) DeepCopyObject() runtime.Object {
 func (in *ComponentSchematicList) DeepCopyInto(out *ComponentSchematicList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	out.ListMeta = in.ListMeta
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]ComponentSchematic, len(*in))
@@ -837,7 +837,7 @@ func (in *TraitBinding) DeepCopy() *TraitBinding {
 func (in *TraitList) DeepCopyInto(out *TraitList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	out.ListMeta = in.ListMeta
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Trait, len(*in))
@@ -967,7 +967,7 @@ func (in *WorkloadType) DeepCopyObject() runtime.Object {
 func (in *WorkloadTypeList) DeepCopyInto(out *WorkloadTypeList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	out.ListMeta = in.ListMeta
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]WorkloadType, len(*in))
