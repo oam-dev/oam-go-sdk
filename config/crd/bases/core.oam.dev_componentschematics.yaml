@@ -366,6 +366,16 @@ spec:
           - workloadType
           type: object
         status:
+          properties:
+            latestCreatedComponentRevisionName:
+              description: LatestCreatedComponentRevisionName is the last ComponentSchematic
+                revision name that was created from this ComponentSchematic.
+              type: string
+            latestReadyComponentRevisionName:
+              description: LatestReadyComponentRevisionName holds the name of the
+                latest ComponentSchematic revision that has had its "Ready" condition
+                become "True".
+              type: string
           type: object
       required:
       - spec
