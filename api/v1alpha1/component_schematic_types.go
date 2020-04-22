@@ -262,6 +262,15 @@ type ComponentSpec struct {
 }
 
 type ComponentStatus struct {
+	// LatestReadyComponentRevisionName holds the name of the latest ComponentSchematic revision
+	// that has had its "Ready" condition become "True".
+	// +optional
+	LatestReadyComponentRevisionName string `json:"latestReadyComponentRevisionName,omitempty"`
+
+	// LatestCreatedComponentRevisionName is the last ComponentSchematic revision name that was created from this
+	// ComponentSchematic.
+	// +optional
+	LatestCreatedComponentRevisionName string `json:"latestCreatedComponentRevisionName,omitempty"`
 }
 
 // +genclient
