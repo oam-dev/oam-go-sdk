@@ -152,6 +152,8 @@ func (r *Reconciler) SetupWithManager(mgr ctrl.Manager) error {
 			bld = bld.Owns(o)
 		}
 	}
+	controllerOptions := getControllerOption(r.specType)
+	bld = bld.WithOptions(controllerOptions)
 
 	return bld.Complete(r)
 }
