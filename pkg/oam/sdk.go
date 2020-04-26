@@ -24,9 +24,10 @@ type ControllerContext struct {
 var (
 	oamLog            = ctrl.Log.WithName("oam")
 	controllerContext = ControllerContext{
-		handlers: make(map[SType][]Handler),
-		owns:     make(map[SType][]runtime.Object),
-		l:        new(sync.RWMutex),
+		handlers:          make(map[SType][]Handler),
+		owns:              make(map[SType][]runtime.Object),
+		l:                 new(sync.RWMutex),
+		controllerOptions: make(map[SType]controller.Options),
 	}
 )
 
