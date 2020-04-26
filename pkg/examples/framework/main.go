@@ -8,6 +8,8 @@ import (
 	"log"
 	"reflect"
 
+	"sigs.k8s.io/controller-runtime/pkg/controller"
+
 	"github.com/oam-dev/oam-go-sdk/apis/core.oam.dev/v1alpha1"
 	"github.com/oam-dev/oam-go-sdk/pkg/client/clientset/versioned"
 	"github.com/oam-dev/oam-go-sdk/pkg/oam"
@@ -48,7 +50,7 @@ func main() {
 	}
 	// register workloadtpye & trait hooks and handlers
 	oam.RegisterHandlers(oam.STypeApplicationConfiguration, &Handler{name: "my-handler", oamclient: oamclient, k8sclient: clientset})
-
+	oam.ControllerOption(oam.STypeApplicationConfiguration, controller.Options{MaxConcurrentReconciles: 10})
 	// reconcilers must register manualy
 	// cloudnativeapp/oam-runtime/pkg/oam as a pkg should not do os.Exit(), instead of
 	// panic or returning Error could be better
