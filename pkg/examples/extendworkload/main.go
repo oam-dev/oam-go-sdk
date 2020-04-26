@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 
+	"sigs.k8s.io/controller-runtime/pkg/controller"
+
 	"k8s.io/client-go/rest"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -143,6 +145,7 @@ func main() {
 	if newCrd {
 		oam.RegisterObject(oam.SType("applicationConfiguration"), new(ApplicationConfiguration))
 		oam.RegisterHandlers(oam.SType("applicationConfiguration"), &Handler{name: "app", oamclient: oamclient, client: client, newCrd: newCrd})
+		oam.ControllerOption(oam.SType("applicationConfiguration"), controller.Options{MaxConcurrentReconciles: 10})
 		err = oam.Run(oam.WithSpec(oam.SType("applicationConfiguration")))
 		if err != nil {
 			panic(err)
@@ -150,6 +153,7 @@ func main() {
 	} else {
 		// register workloadtpye & trait hooks and handlers
 		oam.RegisterHandlers(oam.STypeApplicationConfiguration, &Handler{name: "app", oamclient: oamclient, client: client, newCrd: newCrd})
+		oam.ControllerOption(oam.STypeApplicationConfiguration, controller.Options{MaxConcurrentReconciles: 10})
 		// reconcilers must register manualy
 		// cloudnativeapp/oam-runtime/pkg/oam as a pkg should not do os.Exit(), instead of
 		// panic or returning Error could be better
