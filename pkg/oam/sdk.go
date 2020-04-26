@@ -4,6 +4,8 @@ import (
 	"os"
 	"sync"
 
+	"sigs.k8s.io/controller-runtime/pkg/controller"
+
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -12,10 +14,11 @@ import (
 type Option func() error
 
 type ControllerContext struct {
-	mgr      ctrl.Manager
-	l        *sync.RWMutex
-	handlers map[SType][]Handler
-	owns     map[SType][]runtime.Object
+	mgr               ctrl.Manager
+	l                 *sync.RWMutex
+	handlers          map[SType][]Handler
+	owns              map[SType][]runtime.Object
+	controllerOptions map[SType]controller.Options
 }
 
 var (
@@ -48,6 +51,18 @@ func RegisterHandlers(name SType, handlers ...Handler) {
 	controllerContext.l.Lock()
 	defer controllerContext.l.Unlock()
 	controllerContext.handlers[name] = append(controllerContext.handlers[name], handlers...)
+}
+
+func ControllerOption(name SType, opt controller.Options) {
+	controllerContext.l.Lock()
+	defer controllerContext.l.Unlock()
+	controllerContext.controllerOptions[name] = opt
+}
+
+func getControllerOption(name SType) controller.Options {
+	controllerContext.l.RLock()
+	defer controllerContext.l.RUnlock()
+	return controllerContext.controllerOptions[name]
 }
 
 func Owns(name SType, owns ...runtime.Object) {
