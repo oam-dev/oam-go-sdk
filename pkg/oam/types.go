@@ -93,7 +93,7 @@ func (s SType) GetRuntimeObj() (runtime.Object, error) {
 	obj, ok := stypes[s]
 	typeLock.Unlock()
 	if ok {
-		return obj, nil
+		return obj.DeepCopyObject(), nil
 	}
 	return nil, fmt.Errorf("can't get spec type '%s', please register it", s)
 }
