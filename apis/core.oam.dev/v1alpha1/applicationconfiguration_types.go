@@ -72,6 +72,10 @@ type ApplicationConfigurationStatus struct {
 	// +patchMergeKey=type
 	// +patchStrategy=merge
 	Conditions []ApplicationCondition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
+
+	// The generation observed by the ApplicationConfiguration controller.
+	// +optional
+	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
 }
 
 // ApplicationPhase is a label for the condition of a Application at the current time.
