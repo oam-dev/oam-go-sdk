@@ -257,6 +257,10 @@ type ComponentStatus struct {
 	// ComponentSchematic.
 	// +optional
 	LatestCreatedComponentRevisionName string `json:"latestCreatedComponentRevisionName,omitempty"`
+
+	// The generation observed by the componentSchematic controller.
+	// +optional
+	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
