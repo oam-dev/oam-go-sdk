@@ -1,5 +1,7 @@
 # OAM Runtime SDK
 
+**NOTE: This SDK only support v0.1.x release of OAM specification (v1alpha1). For v0.2.x release (v1alpha2) please check Crossplane's [OAM Kubernetes Runtime](https://github.com/crossplane/oam-kubernetes-runtime) as dependency. We are also planning to publish a lib/sdk for implementing Trait in the future.**
+
 The OAM Runtime SDK Project is a collection of go libraries and utility tools for building OAM runtime. With the SDK, we want to streamline and simplify building OAM runtime by achieving:
 
 - Building new and converting to OAM API types easily.
