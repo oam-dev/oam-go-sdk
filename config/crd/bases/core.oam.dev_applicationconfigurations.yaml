@@ -188,6 +188,11 @@ spec:
                     type: string
                 type: object
               type: array
+            observedGeneration:
+              description: The generation observed by the ApplicationConfiguration
+                controller.
+              format: int64
+              type: integer
             phase:
               description: 'The phase of a application is a simple, high-level summary
                 of where the whole  Application is in its lifecycle. The conditions
