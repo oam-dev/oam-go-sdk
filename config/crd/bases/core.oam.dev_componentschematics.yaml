@@ -376,6 +376,10 @@ spec:
                 latest ComponentSchematic revision that has had its "Ready" condition
                 become "True".
               type: string
+            observedGeneration:
+              description: The generation observed by the componentSchematic controller.
+              format: int64
+              type: integer
           type: object
       required:
       - spec
