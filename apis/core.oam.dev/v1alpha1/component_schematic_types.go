@@ -137,7 +137,7 @@ type HttpGet struct {
 	Path string `json:"path"`
 	Port int32  `json:"port"`
 	// +optional
-	HttpHeaders []HttpHeader `json:"httpHeaders"`
+	HttpHeaders []HttpHeader `json:"httpHeaders,omitempty"`
 }
 
 /// TcpSocket defines a socket used for health probing.
