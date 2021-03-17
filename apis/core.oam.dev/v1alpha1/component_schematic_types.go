@@ -195,6 +195,8 @@ type Container struct {
 	// +optional
 	ReadinessProbe *HealthProbe `json:"readinessProbe,omitempty"`
 	// +optional
+	StartupProbe *HealthProbe `json:"startupProbe,omitempty"`
+	// +optional
 	ImagePullSecret string `json:"imagePullSecret,omitempty"`
 }
 
